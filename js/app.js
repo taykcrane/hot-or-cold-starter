@@ -78,6 +78,9 @@ $(document).ready(function(){
   		myGuess = $("#userGuess").val();
   		myGuess = +myGuess;
   		console.log(myGuess);
+  		if (not isValid(myGuess)) {
+
+  		}
   		addFeedback(myGuess);
   		addCount();
   		trackGuess(myGuess);
