@@ -16,10 +16,15 @@ $(document).ready(function(){
   	// GAME LOGIC------------------------------
   	var secretNum;
   	var myGuess;
+  	var prevGuesses = [];
   	var myCount = 0;
   	
   	var newGame = function () {
   		secretNum = Math.floor(Math.random() * 100) + 1;
+  		$("#guessList").children().remove();
+  		$("#count").text("0");
+  		myCount = 0;
+  		$("#feedback").text("Make your Guess!");
   		console.log("Secret number chosen: " + secretNum);
   	}
    	
@@ -56,6 +61,12 @@ $(document).ready(function(){
   	}
 
   	var isValid = function (guess) {
+  		for (i = 0; i < prevGuesses.length; i++) {
+  			if (prevGuesses[i] == guess) {
+  				alert("You already guessed that number!");
+  				return false;
+  			}
+  		};
   		if (isNaN(myGuess)) {
   			alert('Please enter a number between 1 - 100');
   			$("#userGuess").val("");
@@ -73,21 +84,25 @@ $(document).ready(function(){
   		}
   	}
 
-  	$("form").submit(function() {
+  	$("form").submit(function(event) {
   		event.preventDefault();
   		myGuess = $("#userGuess").val();
   		myGuess = +myGuess;
   		console.log(myGuess);
-  		if (not isValid(myGuess)) {
-
+  		if (!isValid(myGuess)) {
+  			return;
   		}
+  		prevGuesses.push(myGuess);
+  		console.log(prevGuesses);
   		addFeedback(myGuess);
   		addCount();
   		trackGuess(myGuess);
   		$("#userGuess").val("");
-  	})
+  	});
 
-  	
+	$(".new").on("click", function () {
+		newGame();
+	}); 	
 
 
   	newGame();
